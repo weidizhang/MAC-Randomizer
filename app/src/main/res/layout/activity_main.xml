@@ -39,9 +39,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/button2"
-        android:layout_above="@+id/textView7"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="13dp"
         android:layout_alignParentEnd="true" />
 
     <Button
@@ -49,7 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/button1"
-        android:layout_marginBottom="7dp"
+        android:layout_marginBottom="9dp"
         android:layout_above="@+id/button2"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true" />
@@ -59,7 +58,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView7"
-        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="58dp"
+        android:layout_alignBottom="@+id/button1"
+        android:layout_toStartOf="@+id/textView4" />
+
+    <TextView
+        android:text="Note: Change does not persist over reboots"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView8"
+        android:layout_marginBottom="35dp"
+        android:layout_above="@+id/button1"
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
