@@ -20,6 +20,8 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        doRootCheck();
+
         Button randomizeBtn = (Button) findViewById(R.id.button1);
         randomizeBtn.setOnClickListener(this);
 
@@ -28,6 +30,13 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
 
         updateActualMac();
         updateCurrentMac();
+    }
+
+    private void doRootCheck() {
+        String getID = Command.runAsRoot("id");
+        if (!getID.contains("uid=0")) {
+            Toast.makeText(getApplicationContext(), "Error: Root permission not granted, application will not work", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void updateActualMac() {
