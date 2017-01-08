@@ -59,7 +59,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
             }
 
             if (!success) {
-                Toast.makeText(getApplicationContext(), "Unable to randomize your MAC address", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Unable to randomize your MAC address, try again", Toast.LENGTH_SHORT).show();
             }
         }
         else if (v.getId() == R.id.button2) {
