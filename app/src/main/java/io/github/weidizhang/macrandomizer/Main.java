@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -41,10 +42,25 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.button1) {
-            String randomMac = network.generateRandomMac();
-            network.setMacAddress(randomMac);
+            boolean success = false;
 
-            updateCurrentMac();
+            for (int attempt = 0; attempt < 10; attempt++) {
+                String randomMac = network.generateRandomMac();
+                network.setMacAddress(randomMac);
+
+                updateCurrentMac();
+
+                if (network.getCurrentMac().equals(randomMac)) {
+                    success = true;
+                    Toast.makeText(getApplicationContext(), "Your MAC address has been randomized", Toast.LENGTH_SHORT).show();
+
+                    break;
+                }
+            }
+
+            if (!success) {
+                Toast.makeText(getApplicationContext(), "Unable to randomize your MAC address", Toast.LENGTH_SHORT).show();
+            }
         }
         else if (v.getId() == R.id.button2) {
 
