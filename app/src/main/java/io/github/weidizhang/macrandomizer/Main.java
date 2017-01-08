@@ -6,8 +6,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 public class Main extends AppCompatActivity implements View.OnClickListener {
+
+    Network network = new Network();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,13 +34,17 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
     }
 
     private void updateCurrentMac() {
-
+        TextView currentMacText = (TextView) findViewById(R.id.textView4);
+        currentMacText.setText(network.getCurrentMac());
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.button1) {
+            String randomMac = network.generateRandomMac();
+            network.setMacAddress(randomMac);
 
+            updateCurrentMac();
         }
         else if (v.getId() == R.id.button2) {
 

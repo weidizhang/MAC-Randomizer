@@ -1,11 +1,25 @@
 package io.github.weidizhang.macrandomizer;
 
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 public class Network {
 
+    private String busyBoxBin = "";
+
+    public Network() {
+        String findBusyBox = Command.runAsRoot("busybox");
+
+        if (findBusyBox.contains("BusyBox")) {
+            busyBoxBin = "busybox ";
+        }
+    }
+
     public String getInterface() {
-        String showCmd = Command.runAsRoot("ip link show");
+        String showCmd = Command.runAsRoot(busyBoxBin + "ip link show");
         if (showCmd.contains("wlan0")) {
             return "wlan0";
         }
@@ -16,12 +30,40 @@ public class Network {
         return "error";
     }
 
+    public String getCurrentMac() {
+        String interfaceName = getInterface();
+
+        try {
+            List<NetworkInterface> interfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
+            for (NetworkInterface interfac : interfaces) {
+                if (interfac.getName().equalsIgnoreCase(interfaceName)) {
+                    byte[] macBytes = interfac.getHardwareAddress();
+
+                    if (macBytes != null) {
+                        StringBuilder strBuilder = new StringBuilder();
+
+                        for (byte b : macBytes) {
+                            strBuilder.append(String.format("%02x:", b));
+                        }
+
+                        strBuilder.deleteCharAt(strBuilder.length() - 1);
+                        return strBuilder.toString();
+                    }
+                }
+            }
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+
+        return "02:00:00:00:00:00";
+    }
+
     public void setMacAddress(String newAddr) {
         String interfaceName = getInterface();
 
         String[] commands = new String[] {
-            "ip link set " + interfaceName + " address " + newAddr,
-            "ip link set " + interfaceName + " broadcast " + newAddr
+            busyBoxBin + "ip link set " + interfaceName + " address " + newAddr,
+            busyBoxBin + "ip link set " + interfaceName + " broadcast " + newAddr
         };
 
         Command.runAsRoot(commands);
