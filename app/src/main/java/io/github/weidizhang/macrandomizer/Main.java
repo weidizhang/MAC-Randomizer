@@ -65,13 +65,18 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
 
     private void doFirstRunCheck() {
         if (sharedPrefs.getBoolean("firstRun", true)) {
-
+            network.reloadWifi(getApplicationContext());
+            firstRunListener = true;
         }
     }
 
     public void onWifiEnabled() {
         if (firstRunListener) {
+            sharedPrefs.edit().putBoolean("firstRun", false).commit();
+            sharedPrefs.edit().putString("realMac", network.getCurrentMac()).commit();
 
+            firstRunListener = false;
+            updateActualMac();
         }
         else {
             updateCurrentMac();
@@ -81,7 +86,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
 
     public void updateActualMac() {
         TextView actualMacText = (TextView) findViewById(R.id.textView2);
-        actualMacText.setText(sharedPrefs.getString("realMac", "00:00:00:00:00:00"));
+        actualMacText.setText(sharedPrefs.getString("realMac", "Loading..."));
     }
 
     private void updateCurrentMac() {
