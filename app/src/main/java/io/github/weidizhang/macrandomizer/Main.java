@@ -1,5 +1,8 @@
 package io.github.weidizhang.macrandomizer;
 
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -11,14 +14,21 @@ import android.widget.Toast;
 
 public class Main extends AppCompatActivity implements View.OnClickListener {
 
-    Network network = new Network();
+    private Network network = new Network();
+    private SharedPreferences sharedPrefs;
+
+    private boolean firstRunListener = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        sharedPrefs = getSharedPreferences(getPackageName(), MODE_PRIVATE);
+
+        registerListener();
         doPreReqCheck();
+        doFirstRunCheck();
 
         Button randomizeBtn = (Button) findViewById(R.id.button1);
         randomizeBtn.setOnClickListener(this);
@@ -28,6 +38,15 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
 
         updateActualMac();
         updateCurrentMac();
+    }
+
+    private void registerListener() {
+        Listener listener = new Listener();
+        listener.setMain(this);
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
+        registerReceiver(listener, intentFilter);
     }
 
     private void doPreReqCheck() {
@@ -44,8 +63,25 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
-    private void updateActualMac() {
+    private void doFirstRunCheck() {
+        if (sharedPrefs.getBoolean("firstRun", true)) {
 
+        }
+    }
+
+    public void onWifiEnabled() {
+        if (firstRunListener) {
+
+        }
+        else {
+            updateCurrentMac();
+            Toast.makeText(getApplicationContext(), "Your actual MAC address has been restored", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void updateActualMac() {
+        TextView actualMacText = (TextView) findViewById(R.id.textView2);
+        actualMacText.setText(sharedPrefs.getString("realMac", "00:00:00:00:00:00"));
     }
 
     private void updateCurrentMac() {
@@ -87,9 +123,6 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
 
     private void handleRestoreButton() {
         network.reloadWifi(getApplicationContext());
-        updateCurrentMac();
-
-        Toast.makeText(getApplicationContext(), "Your actual MAC address has been restored", Toast.LENGTH_SHORT).show();
     }
 
     @Override
