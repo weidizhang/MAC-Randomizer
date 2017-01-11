@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.WifiManager;
-import android.widget.Toast;
 
 public class Listener extends BroadcastReceiver {
 
