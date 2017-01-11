@@ -38,4 +38,10 @@ public class Command {
 
         return "";
     }
+
+    public static boolean hasBusybox() {
+        String findBusyBox = Command.runAsRoot("busybox");
+
+        return findBusyBox.contains("BusyBox");
+    }
 }

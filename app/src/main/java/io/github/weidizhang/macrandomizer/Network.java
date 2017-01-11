@@ -14,9 +14,7 @@ public class Network {
     private String busyBoxBin = "";
 
     public Network() {
-        String findBusyBox = Command.runAsRoot("busybox");
-
-        if (findBusyBox.contains("BusyBox")) {
+        if (Command.hasBusybox()) {
             busyBoxBin = "busybox ";
         }
     }
