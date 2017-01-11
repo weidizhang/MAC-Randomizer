@@ -18,7 +18,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        doRootCheck();
+        doPreReqCheck();
 
         Button randomizeBtn = (Button) findViewById(R.id.button1);
         randomizeBtn.setOnClickListener(this);
@@ -30,10 +30,17 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         updateCurrentMac();
     }
 
-    private void doRootCheck() {
+    private void doPreReqCheck() {
         String getID = Command.runAsRoot("id");
         if (!getID.contains("uid=0")) {
             Toast.makeText(getApplicationContext(), "Error: Root permission not granted, application will not work", Toast.LENGTH_LONG).show();
+        }
+        else {
+            String checkIpBin = Command.runAsRoot("ip -V");
+
+            if (!checkIpBin.contains("ip") && !Command.hasBusybox()) {
+                Toast.makeText(getApplicationContext(), "Error: BusyBox not installed and not running custom ROM, please install BusyBox", Toast.LENGTH_LONG).show();
+            }
         }
     }
 
