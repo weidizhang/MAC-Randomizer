@@ -1,7 +1,5 @@
 package io.github.weidizhang.macrandomizer;
 
-import android.content.Context;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -81,10 +79,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
     }
 
     private void handleRestoreButton() {
-        WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-        wifiManager.setWifiEnabled(false);
-        wifiManager.setWifiEnabled(true);
-
+        network.reloadWifi(getApplicationContext());
         updateCurrentMac();
 
         Toast.makeText(getApplicationContext(), "Your actual MAC address has been restored", Toast.LENGTH_SHORT).show();

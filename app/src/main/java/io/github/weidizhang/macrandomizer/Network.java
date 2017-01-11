@@ -1,5 +1,8 @@
 package io.github.weidizhang.macrandomizer;
 
+import android.content.Context;
+import android.net.wifi.WifiManager;
+
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Collections;
@@ -87,5 +90,11 @@ public class Network {
         }
 
         return result;
+    }
+
+    public void reloadWifi(Context context) {
+        WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        wifiManager.setWifiEnabled(false);
+        wifiManager.setWifiEnabled(true);
     }
 }
