@@ -127,6 +127,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
     }
 
     private void handleRestoreButton() {
+        Toast.makeText(getApplicationContext(), "Restoring your MAC address...", Toast.LENGTH_SHORT).show();
         network.reloadWifi(getApplicationContext());
     }
 
