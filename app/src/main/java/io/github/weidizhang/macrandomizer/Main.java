@@ -57,8 +57,8 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         else {
             String checkIpBin = Command.runAsRoot("ip -V");
 
-            if (!checkIpBin.contains("ip") && !Command.hasBusybox()) {
-                Toast.makeText(getApplicationContext(), "Error: BusyBox not installed and not running custom ROM, please install BusyBox", Toast.LENGTH_LONG).show();
+            if (!checkIpBin.contains("ip")) {
+                Toast.makeText(getApplicationContext(), "Error: IP Binary is missing, application will not work", Toast.LENGTH_LONG).show();
             }
         }
     }

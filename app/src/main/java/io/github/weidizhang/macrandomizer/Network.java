@@ -11,16 +11,8 @@ import java.util.Random;
 
 public class Network {
 
-    private String busyBoxBin = "";
-
-    public Network() {
-        if (Command.hasBusybox()) {
-            busyBoxBin = "busybox ";
-        }
-    }
-
     public String getInterface() {
-        String showCmd = Command.runAsRoot(busyBoxBin + "ip link show");
+        String showCmd = Command.runAsRoot("ip link show");
         if (showCmd.contains("wlan0")) {
             return "wlan0";
         }
@@ -63,8 +55,8 @@ public class Network {
         String interfaceName = getInterface();
 
         String[] commands = new String[] {
-            busyBoxBin + "ip link set " + interfaceName + " address " + newAddr,
-            busyBoxBin + "ip link set " + interfaceName + " broadcast " + newAddr
+            "ip link set " + interfaceName + " address " + newAddr,
+            "ip link set " + interfaceName + " broadcast " + newAddr
         };
 
         Command.runAsRoot(commands);
