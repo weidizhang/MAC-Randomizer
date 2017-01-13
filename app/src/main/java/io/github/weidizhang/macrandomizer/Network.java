@@ -54,12 +54,8 @@ public class Network {
     public void setMacAddress(String newAddr) {
         String interfaceName = getInterface();
 
-        String[] commands = new String[] {
-            "ip link set " + interfaceName + " address " + newAddr,
-            "ip link set " + interfaceName + " broadcast " + newAddr
-        };
-
-        Command.runAsRoot(commands);
+        String setCmd = "ip link set " + interfaceName + " address " + newAddr;
+        Command.runAsRoot(setCmd);
     }
 
     public String generateRandomMac() {
