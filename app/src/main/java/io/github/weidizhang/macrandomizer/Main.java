@@ -18,6 +18,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
     private SharedPreferences sharedPrefs;
 
     private boolean firstRunListener = false;
+    private boolean doingMacRestore = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,9 +79,11 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
             firstRunListener = false;
             updateActualMac();
         }
-        else {
+        else if (doingMacRestore) {
             updateCurrentMac();
             Toast.makeText(getApplicationContext(), "Your actual MAC address has been restored", Toast.LENGTH_SHORT).show();
+
+            doingMacRestore = false;
         }
     }
 
@@ -127,6 +130,8 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
     }
 
     private void handleRestoreButton() {
+        doingMacRestore = true;
+
         Toast.makeText(getApplicationContext(), "Restoring your MAC address...", Toast.LENGTH_SHORT).show();
         network.reloadWifi(getApplicationContext());
     }
